@@ -15,6 +15,6 @@
 
 ### 인스타 아이디
 *guseok.k
-https://www.instagram.com/
+[페이지](https://www.instagram.com)
 
 
