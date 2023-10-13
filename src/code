@@ -127,3 +127,4 @@ def extract_data():
 # 추출 함수 실행
 extract_data()
 
+print("hi")
