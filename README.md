@@ -1,13 +1,29 @@
-# Hi there! 👋
+# 도시 교통 흐름의 지능적인 최적화
 
-I'm Your Name, a passionate developer from Your City. Welcome to my GitHub profile!
+## 목표
+인공지능과 빅데이터를 기반으로한 교틍체증 완화
 
-- 🔭 I’m currently working on [Leeseokku](link to your project).
-- 🌱 I’m currently learning [AI Traffic](link to what you're learning).
-- 👯 I’m looking to collaborate on [leeseokku](link to project looking for collaborators).
-- 💬 Ask me about [Any Topic You Like](link to your social media or contact information).
-- 📫 How to reach me: [LinkedIn](your LinkedIn profile URL) | [Twitter](your Twitter profile URL)
-- 😄 Pronouns: He/Him
-- ⚡ Fun fact: [Interesting Fact About You]
+## 핵심내용
+*구성 요소는 교통 신호체계, 실시간 교통 모니터링 장치, 교통 데이터베이스, 차량 간 통신 등이 포함된다
+*이 프로젝트는 머신 러닝 및 딥러닝 기술을 기반으로 하며, 대량의 교통 데이터를 실시간으로 수집하고 분석하기 위해 빅 데이터 기술을 활용한다.
+*도로 네트워크에서 데이터를 수집하기 위해 교통 관제 카메라, 차량 감지 센서, GPS 기술 등과 같은 센서 및 데이터 수집 장치를 설치한다. 이러한 장치들은 교통 데이터를 실시간으로 수집하고 중앙 데이터베이스로 전송한다
+*중앙 데이터베이스에서 수집된 데이터는 빅데이터 분석 및 기계 학습 알고리즘을 활용하여 분석한다
+## 서론
+###배경 설명, 사례 분석
+큰 사례는 이번 추석이다. 이번 추석도 연휴가 길었음에도 불구하고 이동인구는 작년보다 27%증가했다고한다. 또 이런 교통 체증으로 인한 환경오염도 많이 발생한다고 한다. 이러한 문제들을 해결하기위해 이 프로그램을 생각하게 되었다
+### 문제정의
+도로 교통체증으로 인한 시간 낭비, 환경 오염, 에너지 소비, 스트레스 및 교통사고가 증가하고 있으며, 이로 인한 도시 거주민의 삶의 질 저하로 이어집니다
+### 극복 방안
+이 프로그램은 교통 상황 모니터링, 실시간 데이터 분석, 지능적인 교통 신호 제어 및 교통 흐름 예측을 통해 교통체증을 감소시킬 것이다
+## 본론
+### 시스템 개요
+![image](KakaoTalk_20231013_165241692.png)
 
-![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=your-username.your-username)
+### 구현 방안 및 개발 방향
+여러 경로를 통해 교통상황에 대한 정보를 수집하고 알고리즘을 통해 분석한다
+
+### 대표 사진
+![image] (KakaoTalk_20231013_170725918.png)
+
+## 결론
+이 프로젝트는 AI와 데이터 분석을 활용하여 교통체증을 감소시키고 환경에 친화적인 도시 교통 시스템을 구축하는 것을 목표로 한다. 교통 데이터의 실시간 모니터링과 AI 기반 교통 신호 최적화는 교통 효율성을 향상시키고 환경에 미치는 영향을 최소화하는 데 도움이 될 것이다
