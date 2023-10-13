@@ -1,0 +1,129 @@
+import pandas as pd                    # pandas 라이브러리를 가져온다. 데이터 조작을 위해 사용됨.
+from selenium import webdriver        # selenium 라이브러리에서 webdriver 모듈을 가져온다. 웹 드라이버를 제어하기 위해 사용됨.
+from selenium.webdriver.common.by import By   # selenium.webdriver.common 모듈에서 By 모듈을 가져온다. 웹 요소를 찾는 데 사용됨.
+import os                             # os 모듈을 가져온다. 운영체제와 상호작용하기 위해 사용됨.
+import tkinter as tk                   
+from tkinter import *                 
+from tkinter import ttk                # tkinter에서 ttk 모듈을 가져옵니다. 테마가 적용된 위젯을 사용하기 위해 사용됨.
+  
+
+def extract_data():
+    browser = webdriver.Chrome()                # Chrome 웹드라이버를 사용하여 웹 브라우저를 제어하기 위한 객체를 생성.
+    browser.maximize_window()                 # 웹 브라우저 창을 최대화합니다.
+
+    # 1. 페이지 이동
+    url = 'https://finance.naver.com/sise/sise_market_sum.naver?&page='
+    # 주석: 네이버 금융 시가총액 페이지의 URL입니다.
+
+    browser.get(url)                            # 브라우저에서 해당 URL로 페이지를 로드,브라우저 객체를 사용하여 지정한 URL로 페이지를 이동.
+    
+
+
+    # 2. 조회 항목 초기화
+    checkboxes = browser.find_elements(By.NAME, 'fieldIds')#'fieldIds' 이름을 가진 모든 체크박스 요소를 찾는다
+    for checkbox in checkboxes:
+        if checkbox.is_selected():  # 체크된 상태인지 확인
+            checkbox.click()  # 클릭(체크해제)
+
+    # -> 체크박스 요소를 하나씩 확인하며, 체크된 상태인 경우 체크를 해제.
+
+
+
+    # 3. 조회 항목 설정 (원하는 항목)
+    items_to_select = ['영업이익', '자산총계', '매출액']
+    
+    # 주식 종목 입력 받기
+    def submit():
+        input_stock = entry.get()
+        input_stocks = input_stock.split()  # 입력받은 항목을 공백을 기준으로 분리하여 리스트로 저장함.
+        items_to_select.extend(input_stocks)  # items_to_select 리스트에 입력받은 항목들을 추가함.
+        
+        for checkbox in checkboxes:
+            parent = checkbox.find_element(By.XPATH, '..')
+            label = parent.find_element(By.TAG_NAME, 'label')  #체크박스의 부모 요소를 찾고, 해당 부모 요소에서 'label' 태그를 찾는다.
+
+            if label.text in items_to_select:
+                checkbox.click()  # 체크
+            #'label'의 텍스트가 선택해야 할 항목에 포함되어 있다면 체크박스를 클릭하여 체크.
+
+        # 적용하기 클릭
+        btn_apply = browser.find_element(By.XPATH, '//a[@href="javascript:fieldSubmit()"]')  
+        btn_apply.click()
+        # 'fieldSubmit()' 함수가 호출되는 자바스크립트 링크에 해당하는 요소를 찾고 클릭.
+        # 데이터 필드를 적용하기 위해 'btn_apply'를 클릭.
+
+        # 5. 데이터 추출
+        df = pd.read_html(browser.page_source)[1]
+        # 웹 페이지의 HTML 소스를 가져와서 pandas의 'read_html' 함수를 사용하여 테이블 데이터를 추출.
+        # [1]은 두 번째 테이블을 가져옴을 의미한다.
+
+        df.dropna(axis='index', how='all', inplace=True)
+        df.dropna(axis='columns', how='all', inplace=True)
+        df.dropna(axis='columns', how='all', inplace=True)
+        # 주석: 데이터프레임에서 모든 행이나 열이 NaN 값인 경우 해당 행 또는 열을 삭제.
+        # 데이터프레임의 빈 행과 빈 열을 제거.
+
+        #6. 파일 저장
+        f_name= 'naver_finance.csv'   #저장할 파일 이름을 지정.
+        if os.path.exists(f_name):
+            df.to_csv(f_name, encoding='utf-8', index=False, mode='a', header=False)  
+        # 파일이 이미 존재하는 경우, 데이터프레임을 CSV 파일에 추가 모드('a')로 저장.   
+        else:
+            df.to_csv(f_name, encoding='utf-8-sig', index=False)
+         # 파일이 존재하지 않는 경우, 데이터프레임을 새로운 CSV 파일로 저장.
+         # UTF-8 인코딩을 사용하며, 시그니처(BOM)을 추가하여 엑셀에서 한글이 제대로 표시되도록 한다.
+        
+        # Close the browser
+        browser.quit()
+
+       # DataFrame을 표시.
+        root = tk.Tk()
+        root.title("Dataframe Display")
+
+        # Treeview 위젯 생성
+        treeview = ttk.Treeview(root)
+        treeview.pack(fill="both", expand=True)
+        # 주석: 트리뷰 위젯을 생성하고 화면에 표시
+
+       # 열 이름 설정
+        columns = list(df.columns)
+        treeview['columns'] = columns
+        # 주석: 트리뷰에 열 이름을 설정.
+
+       # 열 헤더 포맷 지정
+        for col in columns:
+            treeview.heading(col, text=col)
+            treeview.column(col, width=100)
+        #각 열 헤더에 열 이름을 설정하고, 열의 너비를 100으로 지정.
+
+
+        # 데이터 행 삽입
+        for index, row in df.iterrows():
+            treeview.insert("", "end", values=list(row))
+        #데이터프레임의 각 행을 순회하면서 데이터를 트리뷰에 삽입.
+
+        root.mainloop()
+        #tkinter 창을 유지합니다.
+
+    # tkinter 창 생성
+    window = tk.Tk()
+    window.title("Data Extraction")
+
+    # 사용자 입력을 위한 레이블과 엔트리 생성
+    label = tk.Label(window, text="원하는 항목을 입력하세요 (띄어쓰기로 구분):")
+    label.pack() # 주석: 사용자에게 입력을 요청하기 위한 레이블 생성 및 화면에 표시
+    entry = tk.Entry(window)
+    entry.pack()
+    # 사용자의 입력을 받기 위한 엔트리 위젯 생성 및 화면에 표시
+
+    # 입력을 제출하기 위한 버튼 생성
+    button = tk.Button(window, text="Submit", command=submit)
+    button.pack()
+    # 입력을 제출하기 위한 버튼 생성 및 화면에 표시
+
+    window.mainloop()
+    # tkinter 창을 유지.
+
+# 추출 함수 실행
+extract_data()
+
