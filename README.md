@@ -7,6 +7,8 @@
 
 2. 파일 업로드
 
+3. 셀 스크립트
+   
 
 ![image](https://github.com/leeseokku/Leeseokku/assets/127724468/ed062536-0002-44cf-bf63-87585ad85e31)
 
